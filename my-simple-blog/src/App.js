@@ -6,6 +6,8 @@ import AppHeader from './components/AppHeader'
 import NotFound from './components/NotFound'
 import NonAuthenticatedRoute from './components/NonAuthenticatedRoute'
 import ProtectedRoute from './components/ProtectedRoute'
+import SinglePost from './components/SinglePost'
+
 import './App.css'
 
 class App extends Component {
@@ -66,6 +68,17 @@ class App extends Component {
       )
     }
 
+    const SinglePostPage = ({ match }) => {
+      const { id } = match.params
+      const post = this.state.posts.find(post => post.id === parseInt(id, 10))
+
+      return post ? (
+        <SinglePost post={post} />
+      ) : (
+        <NotFound />
+      )
+    }
+
     return (
       <Router>
         <div className="App">
@@ -89,6 +102,11 @@ class App extends Component {
               from="/"
               to="/posts"
               exact
+            />
+            <ProtectedRoute
+              path="/posts/:id"
+              component={SinglePostPage}
+              user={this.state.user}
             />
             <Route
               path="/not-found"
