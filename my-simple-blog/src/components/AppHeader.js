@@ -1,9 +1,11 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { setUser, userSelector, userFullNameSelector } from '../store/users';
 
-export default function AppHeader ({ user, onLogout }) {
+function AppHeader ({ user, usersName, onLogout }) {
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark justify-content-between">
+    <nav className="navbar navbar-expand-lg navbar-light bg-light justify-content-between">
       <ul className="navbar-nav">
         {
           user && (
@@ -16,7 +18,7 @@ export default function AppHeader ({ user, onLogout }) {
       {
         user && (
           <span>
-            <span>{ user.email }</span>
+            <span>{ usersName }</span>
             <button
               className="btn ml-2 btn-sm btn-info"
               type="button"
@@ -30,3 +32,17 @@ export default function AppHeader ({ user, onLogout }) {
     </nav>
   )
 }
+
+function mapStateToProps(state) {
+  return {
+    user: userSelector(state),
+    usersName: userFullNameSelector(state)
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    onLogout: () => dispatch(setUser(null))
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(AppHeader)
