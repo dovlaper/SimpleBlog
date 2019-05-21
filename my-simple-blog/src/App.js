@@ -4,6 +4,8 @@ import PostList from './components/PostList'
 import AppLogin from './components/AppLogin'
 import AppHeader from './components/AppHeader'
 import NotFound from './components/NotFound'
+import NonAuthenticatedRoute from './components/NonAuthenticatedRoute'
+import ProtectedRoute from './components/ProtectedRoute'
 import './App.css'
 
 class App extends Component {
@@ -72,23 +74,29 @@ class App extends Component {
             onLogout={this.handleLogout}
           />
           <Switch>
-            <Route
+            <NonAuthenticatedRoute
               path='/login'
+              user={this.state.user}
               component={AppLoginPage}
             />
-            <Route
+            <ProtectedRoute
               exact
               path="/posts"
               component={PostListPage}
+              user={this.state.user}
             />
-
-            {/* <Route
+            <Redirect
+              from="/"
+              to="/posts"
+              exact
+            />
+            <Route
               path="/not-found"
               component={NotFound}
-            /> */}
+            />
             <Redirect
               from=""
-              to="/login"
+              to="/not-found"
             />
           </Switch>
         </div>
